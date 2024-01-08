@@ -1,9 +1,7 @@
 # Линейный поиск
-# Найти в данном списке число введенное пользователем
-# сообщить, что число найденно,
-# в противном случае, что не найдено
-# судья - доп. балл за юзабилити прграммы
-# судья - доп. балл за PEP 257 https://habr.com/ru/articles/499358/
+# Измените программу таким образом, чтобы она не только сообщила
+# о наличии числа в списке, но и количестве вхождений
+# Подсказка: использовать рекурсию
 
 import random
 
@@ -18,20 +16,20 @@ def list_generation():
     return numbers_list
 
 
-def linear_search(values, target):
+def linear_search(values, target, start=0, number_of_occurrences = 0):
     """Линейный алгоритм поиска для массива.
     Находим индекс целевого элемента в отсортированном массиве.
     Если элемента в массиве нет, возвращаем -1."""
-    for i in range(len(values)):
+    for i in range(start, len(values)):
     # Проверяем, является ли элемент целевым.
         if values[i] == target:
-            return i
-
+            number_of_occurrences += 1
+            return linear_search(values, target, i + 1,number_of_occurrences)
         # Проверяем, прошли ли мы возможную позицию целевого элемента.
         if values[i] > target:
-            return -1
+            return number_of_occurrences
     # Если мы дошли до этой строки, то целевого элемента в массиве нет.
-    return -1
+    return number_of_occurrences
 
 
 if __name__ == '__main__':
@@ -41,8 +39,8 @@ if __name__ == '__main__':
     print(list_numbers)
 
     search_number = int(input("Введите целое число, которое вы ищите:"))
-
-    if linear_search(list_numbers, search_number) != -1:
-        print("Число присутствует в списке")
+    number_of_occ = linear_search(list_numbers, search_number)
+    if number_of_occ != 0:
+        print("Число присутствует в списке",number_of_occ, "раз")
     else:
         print("Число отсутствует в списке")
